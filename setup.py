@@ -2,6 +2,8 @@ from pathlib import Path
 from setuptools import setup
 import pkg_resources
 
+from bsc_utils import __version__
+
 
 def parse_requirements(filename: str) -> list:
     with Path(filename).open() as f:
@@ -15,7 +17,7 @@ def parse_requirements(filename: str) -> list:
 
 setup(
     name='bsc_utils',
-    version='1.0.0dev',
+    version=__version__,
     description='Util functions for BSC quants',
     author='Trung Dang',
     author_email='trungd@bsc.com.vn',
