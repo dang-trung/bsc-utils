@@ -18,7 +18,7 @@ def parse_requirements(filename: str) -> list:
 setup(
     name='bsc_utils',
     version=__version__,
-    description='Util functions for BSC quants',
+    description='Util Functions for BSC Quants',
     author='Trung Dang',
     author_email='trungd@bsc.com.vn',
     maintainer='Trung Dang',
