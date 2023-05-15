@@ -23,7 +23,7 @@ setup(
     author_email='trungd@bsc.com.vn',
     maintainer='Trung Dang',
     maintainer_email='trungd@bsc.com.vn',
-    url='github.com/dang-trung/bsc-utils',
+    url='https://github.com/dang-trung/bsc-utils',
     license='MIT',
     packages=['bsc_utils'],
     install_requires=parse_requirements('requirements.txt'),
