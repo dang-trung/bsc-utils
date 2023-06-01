@@ -47,4 +47,6 @@ def test_query_index():
         ''',
         index_col='TRADE_DATE'
     )
-    print(r)
+    assert isinstance(r, pd.DataFrame)
+    assert r.index.names == ['TRADE_DATE']
+    assert r.shape == (10, 2)
