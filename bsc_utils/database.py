@@ -3,6 +3,7 @@ from typing import Union
 
 import sqlite3
 import oracledb
+import pandas as pd
 import pymssql
 
 import bsc_utils.config as config
@@ -42,14 +43,14 @@ def query(
     query: str,
     params: Union[list, tuple] = None,
     fetch: bool = True,
-    as_dict: bool = True
-):
-
+    as_df: bool = True,
+    index_col: str = None
+) -> Union[list, pd.DataFrame]:
     con = connect(database)
-    if database == Database.MSSQL and as_dict:
-        cur = con.cursor(as_dict)
+    if database == Database.MSSQL:
+        cur = con.cursor(as_dict=True)
 
-    if database == Database.SQLITE and as_dict:
+    if database == Database.SQLITE:
         con.row_factory = dict_factory
         cur = con.cursor()
 
@@ -61,11 +62,25 @@ def query(
         if isinstance(params, list) else cur.execute(query, params)
     )
 
-    if database == Database.ORACLE and as_dict:
+    if database == Database.ORACLE:
         cols = [col[0] for col in cur.description]
         cur.rowfactory = lambda *args: dict(zip(cols, args))
 
-    obj = cur.fetchall() if fetch else None
+    obj = None
+    if fetch:
+        obj = cur.fetchall()
+        if as_df:
+            obj = make_tabular(obj, index_col)
+            
     con.commit()
     con.close()
+
     return obj
+
+
+def make_tabular(obj: list[dict], index_col: str) -> pd.DataFrame:
+    df = pd.DataFrame(obj)
+    if index_col:
+        df.set_index(index_col, inplace=True)
+
+    return df
