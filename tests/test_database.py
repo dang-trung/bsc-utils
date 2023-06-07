@@ -7,7 +7,8 @@ def test_connect():
     connect(database=Database.MSSQL)
     connect(database=Database.ORACLE)
     connect(database=Database.SQLITE)
-
+    connect(database=Database.ACCESS)
+    
 
 def test_query_mssql():
     r = query(Database.MSSQL, 'SELECT TOP 1 SYMBOL FROM STOCK_SYMBOLS')
@@ -33,6 +34,16 @@ def test_query_sqlite():
     assert r.shape == (1, 1)
     
 
+def test_query_access():
+    r = query(
+        Database.ACCESS,
+        'SELECT TOP 1 * FROM stock_bcpt'
+    )
+
+    #print(r)
+    assert isinstance(r, pd.DataFrame)
+    assert r.shape == (1, 7)
+
 def test_query_index():
     r = query(
         Database.ORACLE,
@@ -47,6 +58,7 @@ def test_query_index():
         ''',
         index_col='TRADE_DATE'
     )
+
     assert isinstance(r, pd.DataFrame)
     assert r.index.names == ['TRADE_DATE']
     assert r.shape == (10, 2)

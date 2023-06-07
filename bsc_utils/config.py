@@ -13,3 +13,5 @@ oracle_password = os.getenv('ORACLE_PASSWORD')
 oracle_dsn = os.getenv('ORACLE_DSN')
 
 sqlite_path = os.getenv('SQLITE_PATH')
+
+access_path = os.getenv('ACCESS_PATH')
