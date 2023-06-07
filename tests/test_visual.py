@@ -1,5 +1,3 @@
-import pandas as pd
-
 from bsc_utils.database import Database, query
 from bsc_utils.visual import plotly
 
@@ -22,12 +20,7 @@ def test_plotly():
         ''',
         index_col='TRADE_DATE'
     )
-    trading_days = [d.to_pydatetime() for d in quotes.index]
-    all_days = [
-        d.to_pydatetime() for d in
-        pd.date_range(start=trading_days[0], end=trading_days[-1], freq='D')
-    ]
-    non_trading_days = [d for d in all_days if d not in trading_days]
+
     subplots = {
         'VN-Index':
             [
@@ -44,18 +37,16 @@ def test_plotly():
                         'VN-Index',
                     'range':
                         [
-                            quotes['CLOSE_INDEX'].min() * .5,
+                            quotes['CLOSE_INDEX'].min() * .8,
                             quotes['CLOSE_INDEX'].max() * 1.1
                         ],
-                },
-                {
+                }, {
                     'type': 'scatter',
                     'x': quotes.index,
                     'y': quotes['MA30D'],
                     'showlegend': False,
                     'name': 'MA20D',
-                },
-                {
+                }, {
                     'type': 'bar',
                     'x': quotes.index,
                     'y': quotes['TOTAL_VALUE'],
@@ -80,5 +71,4 @@ def test_plotly():
     }
 
     fig = plotly(subplots)
-    fig.update_xaxes(rangebreaks=[dict(values=non_trading_days)])
     fig.show()
