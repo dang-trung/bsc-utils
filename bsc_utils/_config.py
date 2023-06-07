@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv('.env')
 
 mssql_server = os.getenv('MSSQL_SERVER')
 mssql_user = os.getenv('MSSQL_USER')
