@@ -7,9 +7,9 @@ import pandas as pd
 import pymssql
 import pyodbc
 
-import bsc_utils.config as config
-from bsc_utils.helpers import dict_factory
-from bsc_utils.exceptions import NotDatabaseError
+from . import _config as config
+from ._helpers import dict_factory
+from .exceptions import NotDatabaseError
 
 
 class Database(Enum):
