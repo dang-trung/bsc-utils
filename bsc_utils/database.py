@@ -18,6 +18,7 @@ class Database(Enum):
     SQLITE = 'sqlite'
     ACCESS = 'access'
 
+
 def connect(database: Database):
     if not isinstance(database, Database):
         raise NotDatabaseError('Must be a database.Database instance.')
@@ -37,9 +38,14 @@ def connect(database: Database):
         )
     elif database == Database.SQLITE:
         return sqlite3.connect(database=config.sqlite_path)
-    
+
     elif database == Database.ACCESS:
-        return pyodbc.connect(f'Driver={{Microsoft Access Driver (*.mdb, *.accdb)}};DBQ={config.access_path};')
+        return pyodbc.connect(
+            f'''
+            Driver={{Microsoft Access Driver (*.mdb, *.accdb)}};
+            DBQ={config.access_path};
+            '''
+        )
 
 
 def query(
@@ -54,14 +60,11 @@ def query(
     if database == Database.MSSQL:
         cur = con.cursor(as_dict=True)
 
-    if database == Database.SQLITE:
+    elif database == Database.SQLITE:
         con.row_factory = dict_factory
         cur = con.cursor()
 
-    if database == Database.ORACLE:
-        cur = con.cursor()
-    
-    if database == Database.ACCESS:
+    elif database == Database.ORACLE or database == Database.ACCESS:
         cur = con.cursor()
 
     cur.execute(query) if params is None else (
@@ -72,22 +75,20 @@ def query(
     if database == Database.ORACLE:
         cols = [col[0] for col in cur.description]
         cur.rowfactory = lambda *args: dict(zip(cols, args))
-    
-    if database == Database.ACCESS:
-        cols = [col[0] for col in cur.description]
 
-    #obj = None
-    obj = []
+    obj = None
     if fetch:
+        obj = cur.fetchall()
+
         if database == Database.ACCESS:
-            for row in cur.fetchall():
-                obj.append(dict(zip(cols, row)))
-        else:
-            obj = cur.fetchall()
-            
+            obj = [
+                dict(zip([col[0] for col in cur.description], row))
+                for row in obj
+            ]
+
         if as_df:
             obj = make_tabular(obj, index_col)
-            
+
     con.commit()
     con.close()
 
