@@ -1,13 +1,15 @@
 import pandas as pd
+import pytest
 
 from bsc_utils.database import Database, connect, query
+
+default_skip = pytest.mark.skipif("not config.getoption('nonskip')")
 
 
 def test_connect():
     connect(database=Database.MSSQL)
     connect(database=Database.ORACLE)
     connect(database=Database.SQLITE)
-    connect(database=Database.ACCESS)
 
 
 def test_query_mssql():
@@ -34,6 +36,7 @@ def test_query_sqlite():
     assert r.shape == (1, 1)
 
 
+@default_skip
 def test_query_access():
     r = query(Database.ACCESS, 'SELECT TOP 1 SYMBOL FROM STOCK_BCPT')
 
