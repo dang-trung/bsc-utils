@@ -16,3 +16,4 @@ sqlite_path = os.getenv('SQLITE_PATH')
 
 skype_account = os.getenv('SKYPE_ACCOUNT')
 skype_password = os.getenv('SKYPE_PASSWORD')
+access_path = os.getenv('ACCESS_PATH')
