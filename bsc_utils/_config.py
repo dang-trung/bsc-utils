@@ -13,3 +13,6 @@ oracle_password = os.getenv('ORACLE_PASSWORD')
 oracle_dsn = os.getenv('ORACLE_DSN')
 
 sqlite_path = os.getenv('SQLITE_PATH')
+
+skype_account = os.getenv('SKYPE_ACCOUNT')
+skype_password = os.getenv('SKYPE_PASSWORD')
