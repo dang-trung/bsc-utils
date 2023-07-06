@@ -5,16 +5,18 @@ import sqlite3
 import oracledb
 import pandas as pd
 import pymssql
+import pyodbc
 
-import bsc_utils.config as config
-from bsc_utils.helpers import dict_factory
-from bsc_utils.exceptions import NotDatabaseError
+from . import _config as config
+from ._helpers import dict_factory
+from .exceptions import NotDatabaseError
 
 
 class Database(Enum):
     MSSQL = 'mssql'
     ORACLE = 'oracle'
     SQLITE = 'sqlite'
+    ACCESS = 'access'
 
 
 def connect(database: Database):
@@ -37,6 +39,14 @@ def connect(database: Database):
     elif database == Database.SQLITE:
         return sqlite3.connect(database=config.sqlite_path)
 
+    elif database == Database.ACCESS:
+        return pyodbc.connect(
+            f'''
+            Driver={{Microsoft Access Driver (*.mdb, *.accdb)}};
+            DBQ={config.access_path};
+            '''
+        )
+
 
 def query(
     database: Database,
@@ -50,11 +60,11 @@ def query(
     if database == Database.MSSQL:
         cur = con.cursor(as_dict=True)
 
-    if database == Database.SQLITE:
+    elif database == Database.SQLITE:
         con.row_factory = dict_factory
         cur = con.cursor()
 
-    if database == Database.ORACLE:
+    elif database == Database.ORACLE or database == Database.ACCESS:
         cur = con.cursor()
 
     cur.execute(query) if params is None else (
@@ -69,9 +79,16 @@ def query(
     obj = None
     if fetch:
         obj = cur.fetchall()
+
+        if database == Database.ACCESS:
+            obj = [
+                dict(zip([col[0] for col in cur.description], row))
+                for row in obj
+            ]
+
         if as_df:
             obj = make_tabular(obj, index_col)
-            
+
     con.commit()
     con.close()
 

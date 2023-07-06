@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv('.env')
 
 mssql_server = os.getenv('MSSQL_SERVER')
 mssql_user = os.getenv('MSSQL_USER')
@@ -13,3 +13,8 @@ oracle_password = os.getenv('ORACLE_PASSWORD')
 oracle_dsn = os.getenv('ORACLE_DSN')
 
 sqlite_path = os.getenv('SQLITE_PATH')
+
+access_path = os.getenv('ACCESS_PATH')
+
+skype_account = os.getenv('SKYPE_ACCOUNT')
+skype_password = os.getenv('SKYPE_PASSWORD')
