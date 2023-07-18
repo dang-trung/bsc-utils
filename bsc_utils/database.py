@@ -31,10 +31,11 @@ def connect(database: Database):
             database=config.mssql_database,
         )
     elif database == Database.ORACLE:
+        oracledb.init_oracle_client()
         return oracledb.connect(
             user=config.oracle_user,
             password=config.oracle_password,
-            dsn=config.oracle_dsn
+            dsn=config.oracle_dsn,
         )
     elif database == Database.SQLITE:
         return sqlite3.connect(database=config.sqlite_path)
