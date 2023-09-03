@@ -6,6 +6,8 @@ import oracledb
 import pandas as pd
 import pymssql
 import pyodbc
+import psycopg2
+import psycopg2.extras
 
 from . import _config as config
 from ._helpers import dict_factory
@@ -15,6 +17,7 @@ from .exceptions import NotDatabaseError
 class Database(Enum):
     MSSQL = 'mssql'
     ORACLE = 'oracle'
+    POSTGRESQL = 'postgresql'
     SQLITE = 'sqlite'
     ACCESS = 'access'
 
@@ -30,6 +33,7 @@ def connect(database: Database):
             password=config.mssql_password,
             database=config.mssql_database,
         )
+
     elif database == Database.ORACLE:
         oracledb.init_oracle_client()
         return oracledb.connect(
@@ -37,6 +41,13 @@ def connect(database: Database):
             password=config.oracle_password,
             dsn=config.oracle_dsn,
         )
+
+    elif database == Database.POSTGRESQL:
+        return psycopg2.connect(
+            dsn=config.postgresql_url,
+            cursor_factory=psycopg2.extras.RealDictCursor
+        )
+
     elif database == Database.SQLITE:
         return sqlite3.connect(database=config.sqlite_path)
 
@@ -66,7 +77,7 @@ def query(
         con.row_factory = dict_factory
         cur = con.cursor()
 
-    elif database == Database.ORACLE or database == Database.ACCESS:
+    elif database in [Database.ORACLE, Database.ACCESS, Database.POSTGRESQL]:
         cur = con.cursor()
 
     cur.execute(query) if params is None else (
@@ -82,7 +93,10 @@ def query(
     if fetch:
         obj = cur.fetchall()
 
-        if database == Database.ACCESS:
+        if database == Database.POSTGRESQL:
+            obj = [dict(row) for row in obj]
+
+        elif database == Database.ACCESS:
             obj = [
                 dict(zip([col[0] for col in cur.description], row))
                 for row in obj
