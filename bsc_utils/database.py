@@ -55,6 +55,7 @@ def query(
     params: Union[list, tuple] = None,
     fetch: bool = True,
     as_df: bool = True,
+    datetime_cols: list = None,
     index_col: str = None
 ) -> Union[list, pd.DataFrame]:
     con = connect(database)
@@ -88,7 +89,7 @@ def query(
             ]
 
         if as_df:
-            obj = make_tabular(obj, index_col)
+            obj = make_tabular(obj, index_col, datetime_cols)
 
     con.commit()
     con.close()
@@ -96,9 +97,15 @@ def query(
     return obj
 
 
-def make_tabular(obj: list[dict], index_col: str) -> pd.DataFrame:
+def make_tabular(
+    obj: list[dict],
+    index_col: str,
+    datetime_cols: list = None
+) -> pd.DataFrame:
     df = pd.DataFrame(obj)
     if index_col:
         df.set_index(index_col, inplace=True)
+    if datetime_cols:
+        df[datetime_cols] = df[datetime_cols].apply(pd.to_datetime)
 
     return df
