@@ -10,6 +10,7 @@ def test_connect():
     connect(database=Database.MSSQL)
     connect(database=Database.ORACLE)
     connect(database=Database.SQLITE)
+    connect(database=Database.POSTGRESQL)
 
 
 def test_query_mssql():
@@ -21,10 +22,16 @@ def test_query_mssql():
 def test_query_oracle():
     r = query(
         Database.ORACLE,
-        'SELECT SECURITY_CODE FROM SECURITIES FETCH FIRST 1 ROWS ONLY'
+        'SELECT SECURITY_CODE FROM SECURITIES FETCH FIRST 1 ROWS ONLY',
     )
     assert isinstance(r, pd.DataFrame)
     assert r.shape == (1, 1)
+
+
+def test_query_postgre():
+    r = query(Database.POSTGRESQL, 'SELECT now()')
+    assert isinstance(r, pd.DataFrame)
+    assert len(r) == 1
 
 
 def test_query_sqlite():
