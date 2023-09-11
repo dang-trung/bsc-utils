@@ -1,6 +1,6 @@
 def pytest_addoption(parser):
     parser.addoption(
-        '--nonskip',
+        '--runall',
         action='store_true',
         dest='nonskip',
         default=False,
