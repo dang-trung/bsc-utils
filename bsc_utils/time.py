@@ -1,13 +1,14 @@
 import datetime as dt
 import json
 from pathlib import Path
-import pytz
 from typing import Literal
 
-from .database import Database, query
-from .resources import queries
-from .exceptions import SymbolNotFoundError
+import pytz
+
 from ._helpers import minus_time
+from .database import Database, query
+from .exceptions import SymbolNotFoundError
+from .resources import queries
 
 
 def latest_td(symbol: str) -> dt.datetime:
