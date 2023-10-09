@@ -1,6 +1,6 @@
-from bsc_utils.chat import Messenger
-
 import pytest
+
+from bsc_utils.chat import Messenger
 
 default_skip = pytest.mark.skipif("not config.getoption('nonskip')")
 

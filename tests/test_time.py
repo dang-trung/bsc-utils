@@ -2,8 +2,8 @@ import datetime as dt
 
 import pytest
 
-from bsc_utils.time import latest_td, prev_td, session_time
 from bsc_utils.exceptions import SymbolNotFoundError
+from bsc_utils.time import latest_td, prev_td, session_time
 
 
 def test_latest_td():

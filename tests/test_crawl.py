@@ -2,7 +2,7 @@ import datetime as dt
 
 import pandas as pd
 
-from bsc_utils.crawl import yf, fred
+from bsc_utils.crawl import fred, yf
 
 
 def test_yf():
