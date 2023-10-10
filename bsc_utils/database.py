@@ -9,9 +9,9 @@ import psycopg2.extras
 import pymssql
 import pyodbc
 
-from . import _config as config
-from ._helpers import dict_factory
-from .exceptions import NotDatabaseError
+from bsc_utils.config import config
+from bsc_utils.exceptions import NotDatabaseError
+from bsc_utils.helpers import dict_factory
 
 
 class Database(Enum):
@@ -28,34 +28,34 @@ def connect(database: Database):
 
     if database == Database.MSSQL:
         return pymssql.connect(
-            server=config.mssql_server,
-            user=config.mssql_user,
-            password=config.mssql_password,
-            database=config.mssql_database,
+            server=config.mssql.server,
+            user=config.mssql.user,
+            password=config.mssql.password,
+            database=config.mssql.database,
         )
 
     elif database == Database.ORACLE:
         oracledb.init_oracle_client()
         return oracledb.connect(
-            user=config.oracle_user,
-            password=config.oracle_password,
-            dsn=config.oracle_dsn,
+            user=config.oracle.user,
+            password=config.oracle.password,
+            dsn=config.oracle.dsn,
         )
 
     elif database == Database.POSTGRESQL:
         return psycopg2.connect(
-            dsn=config.postgresql_url,
+            dsn=config.postgresql.url,
             cursor_factory=psycopg2.extras.RealDictCursor
         )
 
     elif database == Database.SQLITE:
-        return sqlite3.connect(database=config.sqlite_path)
+        return sqlite3.connect(database=config.sqlite.path)
 
     elif database == Database.ACCESS:
         return pyodbc.connect(
             f'''
             Driver={{Microsoft Access Driver (*.mdb, *.accdb)}};
-            DBQ={config.access_path};
+            DBQ={config.access.path};
             '''
         )
 

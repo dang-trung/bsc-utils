@@ -5,10 +5,10 @@ from typing import Literal
 
 import pytz
 
-from ._helpers import minus_time
-from .database import Database, query
-from .exceptions import SymbolNotFoundError
-from .resources import queries
+from bsc_utils.database import Database, query
+from bsc_utils.exceptions import SymbolNotFoundError
+from bsc_utils.helpers import minus_time
+from bsc_utils.resources import queries
 
 
 def latest_td(symbol: str) -> dt.datetime:
