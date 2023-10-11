@@ -12,7 +12,7 @@ maintainers = ["Trung Dang <dangtrung96@gmail.com>"]
 name = "bsc-utils"
 readme = "README.md"
 repository = "https://github.com/dang-trung/bsc-utils"
-version = "1.0.4b"
+version = "1.0.5"
 
 [tool.poetry.dependencies]
 python = "^3.11"
