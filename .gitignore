@@ -38,3 +38,6 @@ ENV/
 
 # Notebooks
 /notebooks/
+
+# Ignore dynaconf secret files
+.secrets.*

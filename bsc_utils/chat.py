@@ -2,13 +2,13 @@ from pathlib import Path
 
 from skpy import Skype
 
-from . import _config as config
+from bsc_utils.config import config
 
 
 class Messenger:
 
     def __init__(self):
-        self.skype = Skype(user=config.skype_account, pwd=config.skype_password)
+        self.skype = Skype(user=config.skype.account, pwd=config.skype.password)
         self.contacts = self.skype.chats
 
     def send_message(self, msg: str, target_id: str):
