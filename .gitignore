@@ -41,3 +41,4 @@ ENV/
 
 # Ignore dynaconf secret files
 .secrets.*
+debug.log
