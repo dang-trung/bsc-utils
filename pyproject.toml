@@ -12,7 +12,7 @@ maintainers = ["Trung Dang <dangtrung96@gmail.com>"]
 name = "bsc-utils"
 readme = "README.md"
 repository = "https://github.com/dang-trung/bsc-utils"
-version = "1.0.5"
+version = "1.0.6"
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -21,7 +21,7 @@ pandas = "^2.1.0"
 oracledb = "^1.4.1"
 plotly = "^5.16.1"
 psycopg2 = "^2.9.7"
-pymssql = "^2.2.8"
+pymssql = "^2.2.7"
 pyodbc = "^4.0.39"
 skpy = "^0.10.6"
 tqdm = "^4.66.1"
